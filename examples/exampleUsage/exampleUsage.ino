@@ -3,7 +3,7 @@
  *
  * SHDLC-Generator: 0.8.2
  * Yaml Version: 0.3.0
- * Template Version: 0.1.1-41-g14b88de
+ * Template Version: 0.2.0
  */
 /*
  * Copyright (c) 2021, Sensirion AG
@@ -39,7 +39,7 @@
 #include <Arduino.h>
 #include <SensirionShdlcSvm40.h>
 
-SensirionShdlcSvm40 SVM40;
+SensirionShdlcSvm40 svm40;
 
 void setup() {
     uint16_t error;
@@ -56,18 +56,18 @@ void setup() {
         delay(100);
     }
 
-    SVM40.begin(Serial1);
+    svm40.begin(Serial1);
 #else  /* HAVE_HWSERIAL1 */
-    SVM40.begin(Serial);
+    svm40.begin(Serial);
 #endif /* HAVE_HWSERIAL1 */
 
     uint8_t serialNumber[32];
     uint8_t serialNumberSize = 32;
-    error = SVM40.getSerialNumber(serialNumber, serialNumberSize);
+    error = svm40.getSerialNumber(serialNumber, serialNumberSize);
 #ifdef HAVE_HWSERIAL1
     if (error) {
         Serial.print("Error trying to execute getSerialNumber(): ");
-        errorToString(error, errorMessage);
+        errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
     } else {
         Serial.print("Serial Number:");
@@ -77,11 +77,11 @@ void setup() {
 
     uint8_t productType[32];
     uint8_t productTypeSize = 32;
-    error = SVM40.getProductType(productType, productTypeSize);
+    error = svm40.getProductType(productType, productTypeSize);
 #ifdef HAVE_HWSERIAL1
     if (error) {
         Serial.print("Error trying to execute getProductType(): ");
-        errorToString(error, errorMessage);
+        errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
     } else {
         Serial.print("Product Type:");
@@ -91,11 +91,11 @@ void setup() {
 
     uint8_t productName[32];
     uint8_t productNameSize = 32;
-    error = SVM40.getProductName(productName, productNameSize);
+    error = svm40.getProductName(productName, productNameSize);
 #ifdef HAVE_HWSERIAL1
     if (error) {
         Serial.print("Error trying to execute getProductName(): ");
-        errorToString(error, errorMessage);
+        errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
     } else {
         Serial.print("Product Name:");
@@ -110,13 +110,13 @@ void setup() {
     uint8_t hardwareMinor;
     uint8_t protocolMajor;
     uint8_t protocolMinor;
-    error = SVM40.getVersion(firmwareMajor, firmwareMinor, firmwareDebug,
+    error = svm40.getVersion(firmwareMajor, firmwareMinor, firmwareDebug,
                              hardwareMajor, hardwareMinor, protocolMajor,
                              protocolMinor);
 #ifdef HAVE_HWSERIAL1
     if (error) {
         Serial.print("Error trying to execute getVersion(): ");
-        errorToString(error, errorMessage);
+        errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
     } else {
         Serial.print("Firmware Major:");
@@ -143,11 +143,11 @@ void setup() {
 #endif /* HAVE_HWSERIAL1 */
 
     // Start Measurement
-    error = SVM40.startContinuousMeasurement();
+    error = svm40.startContinuousMeasurement();
 #ifdef HAVE_HWSERIAL1
     if (error) {
         Serial.print("Error trying to execute startContinuousMeasurement(): ");
-        errorToString(error, errorMessage);
+        errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
     }
 #endif /* HAVE_HWSERIAL1 */

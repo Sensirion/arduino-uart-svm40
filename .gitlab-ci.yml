@@ -30,7 +30,7 @@ syntax_check:
 cppcheck:
   stage: validate
   image:
-      name: registry.gitlab.sensirion.lokal/mso-sw/drivers/docker-driver-generator:0.1.0
+      name: registry.gitlab.sensirion.lokal/mso-sw/drivers/docker-driver-generator:latest
   tags: [linux, docker]
   script:
     - cppcheck src/
