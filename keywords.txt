@@ -51,7 +51,7 @@ enterBootloader	KEYWORD2
 # Instances (KEYWORD2)
 #######################################
 
-SVM40	KEYWORD2
+svm40	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
