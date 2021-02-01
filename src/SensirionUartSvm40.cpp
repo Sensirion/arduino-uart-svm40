@@ -64,9 +64,6 @@ uint16_t SensirionUartSvm40::startContinuousMeasurement() {
 
     error = SensirionShdlcCommunication::sendAndReceiveFrame(*_serial, txFrame,
                                                              rxFrame, 50000);
-    if (error) {
-        return error;
-    }
 
     return error;
 }
@@ -85,9 +82,6 @@ uint16_t SensirionUartSvm40::stopMeasurement() {
 
     error = SensirionShdlcCommunication::sendAndReceiveFrame(*_serial, txFrame,
                                                              rxFrame, 50000);
-    if (error) {
-        return error;
-    }
 
     return error;
 }
@@ -215,9 +209,6 @@ uint16_t SensirionUartSvm40::storeNvData() {
 
     error = SensirionShdlcCommunication::sendAndReceiveFrame(*_serial, txFrame,
                                                              rxFrame, 500000);
-    if (error) {
-        return error;
-    }
 
     return error;
 }
@@ -239,9 +230,6 @@ uint16_t SensirionUartSvm40::setTemperatureOffsetForRhtMeasurements(
 
     error = SensirionShdlcCommunication::sendAndReceiveFrame(*_serial, txFrame,
                                                              rxFrame, 50000);
-    if (error) {
-        return error;
-    }
 
     return error;
 }
@@ -267,9 +255,6 @@ uint16_t SensirionUartSvm40::setVocTuningParameters(
 
     error = SensirionShdlcCommunication::sendAndReceiveFrame(*_serial, txFrame,
                                                              rxFrame, 50000);
-    if (error) {
-        return error;
-    }
 
     return error;
 }
@@ -313,9 +298,6 @@ uint16_t SensirionUartSvm40::setVocState(uint8_t state[], uint8_t stateSize) {
 
     error = SensirionShdlcCommunication::sendAndReceiveFrame(*_serial, txFrame,
                                                              rxFrame, 50000);
-    if (error) {
-        return error;
-    }
 
     return error;
 }
@@ -438,9 +420,6 @@ uint16_t SensirionUartSvm40::deviceReset() {
 
     error = SensirionShdlcCommunication::sendAndReceiveFrame(*_serial, txFrame,
                                                              rxFrame, 50000);
-    if (error) {
-        return error;
-    }
 
     delay(100);
     return error;
@@ -483,9 +462,6 @@ uint16_t SensirionUartSvm40::enterBootloader() {
 
     error = SensirionShdlcCommunication::sendAndReceiveFrame(*_serial, txFrame,
                                                              rxFrame, 50000);
-    if (error) {
-        return error;
-    }
 
     delay(1000);
     return error;
