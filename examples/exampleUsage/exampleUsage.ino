@@ -30,9 +30,12 @@
  */
 
 #include <Arduino.h>
-#include <SensirionShdlcSvm40.h>
+#include <SensirionUartSvm40.h>
 
-SensirionShdlcSvm40 svm40;
+// Adjust as needed for you Arduino board
+#define SENSOR_SERIAL_INTERFACE Serial1
+
+SensirionUartSvm40 svm40;
 
 void setup() {
     uint16_t error;
@@ -43,12 +46,12 @@ void setup() {
         delay(100);
     }
 
-    Serial2.begin(115200);
-    while (!Serial2) {
+    SENSOR_SERIAL_INTERFACE.begin(115200);
+    while (!SENSOR_SERIAL_INTERFACE) {
         delay(100);
     }
 
-    svm40.begin(Serial2);
+    svm40.begin(SENSOR_SERIAL_INTERFACE);
 
     error = svm40.deviceReset();
     if (error) {
@@ -68,7 +71,7 @@ void setup() {
         errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
     } else {
-        Serial.print("Serial Number:");
+        Serial.print("SerialNumber:");
         Serial.println((char*)serialNumber);
     }
 
@@ -80,7 +83,7 @@ void setup() {
         errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
     } else {
-        Serial.print("Product Type:");
+        Serial.print("ProductType:");
         Serial.println((char*)productType);
     }
 
@@ -92,7 +95,7 @@ void setup() {
         errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
     } else {
-        Serial.print("Product Name:");
+        Serial.print("ProductName:");
         Serial.println((char*)productName);
     }
 

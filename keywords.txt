@@ -6,47 +6,29 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-SensirionShdlcSvm40	KEYWORD1
+SensirionUartSvm40	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 startContinuousMeasurement	KEYWORD2
-
 stopMeasurement	KEYWORD2
-
 readMeasuredValuesAsIntegers	KEYWORD2
-
 readMeasuredValuesAsIntegersWithRawParameters	KEYWORD2
-
 getTemperatureOffsetForRhtMeasurements	KEYWORD2
-
 getVocTuningParameters	KEYWORD2
-
 storeNvData	KEYWORD2
-
 setTemperatureOffsetForRhtMeasurements	KEYWORD2
-
 setVocTuningParameters	KEYWORD2
-
 getVocState	KEYWORD2
-
 setVocState	KEYWORD2
-
 getProductType	KEYWORD2
-
 getProductName	KEYWORD2
-
 getSerialNumber	KEYWORD2
-
 getVersion	KEYWORD2
-
 deviceReset	KEYWORD2
-
 getSystemUpTime	KEYWORD2
-
 enterBootloader	KEYWORD2
-
 #######################################
 # Instances (KEYWORD2)
 #######################################
