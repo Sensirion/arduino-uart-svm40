@@ -26,20 +26,23 @@ Note: Installation via the Arduino Library Manager is coming soon.
    board to find the correct pins. The pinout of the SVM40
    Sensor board can be found in the data sheet.
 
-	* **VDD** of the SEK-SVM40 to the **xV** of your Arduino board TODO: Add correct voltage
+	* **VDD** of the SEK-SVM40 to the **3.3V** of your Arduino board (5V works as well)
 	* **GND** of the SEK-SVM40 to the **GND** of your Arduino board
-	* **RX** of the SEK-SVM40 to the **UART1-RX** of your Arduino board
-	* **TX** of the SEK-SVM40 to the **UART1-TX** of your Arduino board
+	* **RX** of the SEK-SVM40 to the **UART1-TX** of your Arduino board
+	* **TX** of the SEK-SVM40 to the **UART1-RX** of your Arduino board
 
 2. Open the `exampleUsage` sample project within the Arduino IDE
 
-		File => Examples => Sensirion UART Svm40 => exampleUsage
+		File => Examples => Sensirion UART SVM40 => exampleUsage
 
-3. Click the `Upload` button in the Arduino IDE or
+3. Depending on your Arduino board you may need to adapt the `#define
+   SENSOR_SERIAL_INTERFACE` to choose the correct serial interface.
+
+4. Click the `Upload` button in the Arduino IDE or
 
 		Sketch => Upload
 
-4. When the upload process has finished, open the `Serial Monitor` or `Serial
+5. When the upload process has finished, open the `Serial Monitor` or `Serial
    Plotter` via the `Tools` menu to observe the measurement values. Note that
    the `Baud Rate` in the corresponding window has to be set to `115200 baud`.
 
@@ -61,7 +64,7 @@ formatted accordingly:
 The `-i` flag will apply the format changes to the files listed.
 
 ```bash
-clang-format -i *.cpp *.h
+clang-format -i src/*.cpp src/*.h
 ```
 
 Note that differences from this formatting will result in a failed build until
