@@ -3,7 +3,7 @@
  *
  * SHDLC-Generator: 0.8.2
  * Yaml Version: 0.3.0
- * Template Version: 0.2.0
+ * Template Version: 0.3.0
  */
 /*
  * Copyright (c) 2021, Sensirion AG
@@ -36,20 +36,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "SensirionShdlcSvm40.h"
+#include "SensirionUartSvm40.h"
 #include "Arduino.h"
-#include "SensirionCoreArduinoLibrary.h"
+#include "SensirionCore.h"
 
 #define SVM40_UART_ADDRESS 0x00
 
-SensirionShdlcSvm40::SensirionShdlcSvm40() {
+SensirionUartSvm40::SensirionUartSvm40() {
 }
 
-void SensirionShdlcSvm40::begin(Stream& serial) {
+void SensirionUartSvm40::begin(Stream& serial) {
     _serial = &serial;
 }
 
-uint16_t SensirionShdlcSvm40::startContinuousMeasurement() {
+uint16_t SensirionUartSvm40::startContinuousMeasurement() {
     uint16_t error;
     uint8_t buffer[12];
     SensirionShdlcTxFrame txFrame(buffer, 12);
@@ -64,14 +64,11 @@ uint16_t SensirionShdlcSvm40::startContinuousMeasurement() {
 
     error = SensirionShdlcCommunication::sendAndReceiveFrame(*_serial, txFrame,
                                                              rxFrame, 50000);
-    if (error) {
-        return error;
-    }
 
     return error;
 }
 
-uint16_t SensirionShdlcSvm40::stopMeasurement() {
+uint16_t SensirionUartSvm40::stopMeasurement() {
     uint16_t error;
     uint8_t buffer[12];
     SensirionShdlcTxFrame txFrame(buffer, 12);
@@ -85,14 +82,11 @@ uint16_t SensirionShdlcSvm40::stopMeasurement() {
 
     error = SensirionShdlcCommunication::sendAndReceiveFrame(*_serial, txFrame,
                                                              rxFrame, 50000);
-    if (error) {
-        return error;
-    }
 
     return error;
 }
 
-uint16_t SensirionShdlcSvm40::readMeasuredValuesAsIntegers(
+uint16_t SensirionUartSvm40::readMeasuredValuesAsIntegers(
     int16_t& vocIndex, int16_t& humidity, int16_t& temperature) {
     uint16_t error;
     uint8_t buffer[24];
@@ -118,7 +112,7 @@ uint16_t SensirionShdlcSvm40::readMeasuredValuesAsIntegers(
     return error;
 }
 
-uint16_t SensirionShdlcSvm40::readMeasuredValuesAsIntegersWithRawParameters(
+uint16_t SensirionUartSvm40::readMeasuredValuesAsIntegersWithRawParameters(
     int16_t& vocIndex, int16_t& humidity, int16_t& temperature,
     uint16_t& rawVocTicks, int16_t& rawHumidity, int16_t& rawTemperature) {
     uint16_t error;
@@ -148,7 +142,7 @@ uint16_t SensirionShdlcSvm40::readMeasuredValuesAsIntegersWithRawParameters(
     return error;
 }
 
-uint16_t SensirionShdlcSvm40::getTemperatureOffsetForRhtMeasurements(
+uint16_t SensirionUartSvm40::getTemperatureOffsetForRhtMeasurements(
     uint8_t tOffset[], uint8_t tOffsetSize) {
     uint16_t error;
     uint8_t buffer[522];
@@ -172,7 +166,7 @@ uint16_t SensirionShdlcSvm40::getTemperatureOffsetForRhtMeasurements(
     return error;
 }
 
-uint16_t SensirionShdlcSvm40::getVocTuningParameters(
+uint16_t SensirionUartSvm40::getVocTuningParameters(
     int16_t& vocIndexOffset, int16_t& learningTimeHours,
     int16_t& gatingMaxDurationMinutes, int16_t& stdInitial) {
     uint16_t error;
@@ -200,7 +194,7 @@ uint16_t SensirionShdlcSvm40::getVocTuningParameters(
     return error;
 }
 
-uint16_t SensirionShdlcSvm40::storeNvData() {
+uint16_t SensirionUartSvm40::storeNvData() {
     uint16_t error;
     uint8_t buffer[12];
     SensirionShdlcTxFrame txFrame(buffer, 12);
@@ -215,14 +209,11 @@ uint16_t SensirionShdlcSvm40::storeNvData() {
 
     error = SensirionShdlcCommunication::sendAndReceiveFrame(*_serial, txFrame,
                                                              rxFrame, 500000);
-    if (error) {
-        return error;
-    }
 
     return error;
 }
 
-uint16_t SensirionShdlcSvm40::setTemperatureOffsetForRhtMeasurements(
+uint16_t SensirionUartSvm40::setTemperatureOffsetForRhtMeasurements(
     uint8_t tOffset[], uint8_t tOffsetSize) {
     uint16_t error;
     uint8_t buffer[520];
@@ -239,14 +230,11 @@ uint16_t SensirionShdlcSvm40::setTemperatureOffsetForRhtMeasurements(
 
     error = SensirionShdlcCommunication::sendAndReceiveFrame(*_serial, txFrame,
                                                              rxFrame, 50000);
-    if (error) {
-        return error;
-    }
 
     return error;
 }
 
-uint16_t SensirionShdlcSvm40::setVocTuningParameters(
+uint16_t SensirionUartSvm40::setVocTuningParameters(
     int16_t vocIndexOffset, int16_t learningTimeHours,
     int16_t gatingMaxDurationMinutes, int16_t stdInitial) {
     uint16_t error;
@@ -267,14 +255,11 @@ uint16_t SensirionShdlcSvm40::setVocTuningParameters(
 
     error = SensirionShdlcCommunication::sendAndReceiveFrame(*_serial, txFrame,
                                                              rxFrame, 50000);
-    if (error) {
-        return error;
-    }
 
     return error;
 }
 
-uint16_t SensirionShdlcSvm40::getVocState(uint8_t state[], uint8_t stateSize) {
+uint16_t SensirionUartSvm40::getVocState(uint8_t state[], uint8_t stateSize) {
     uint16_t error;
     uint8_t buffer[28];
     SensirionShdlcTxFrame txFrame(buffer, 28);
@@ -297,7 +282,7 @@ uint16_t SensirionShdlcSvm40::getVocState(uint8_t state[], uint8_t stateSize) {
     return error;
 }
 
-uint16_t SensirionShdlcSvm40::setVocState(uint8_t state[], uint8_t stateSize) {
+uint16_t SensirionUartSvm40::setVocState(uint8_t state[], uint8_t stateSize) {
     uint16_t error;
     uint8_t buffer[28];
     SensirionShdlcTxFrame txFrame(buffer, 28);
@@ -313,15 +298,12 @@ uint16_t SensirionShdlcSvm40::setVocState(uint8_t state[], uint8_t stateSize) {
 
     error = SensirionShdlcCommunication::sendAndReceiveFrame(*_serial, txFrame,
                                                              rxFrame, 50000);
-    if (error) {
-        return error;
-    }
 
     return error;
 }
 
-uint16_t SensirionShdlcSvm40::getProductType(uint8_t productType[],
-                                             uint8_t productTypeSize) {
+uint16_t SensirionUartSvm40::getProductType(uint8_t productType[],
+                                            uint8_t productTypeSize) {
     uint16_t error;
     uint8_t buffer[522];
     SensirionShdlcTxFrame txFrame(buffer, 522);
@@ -344,8 +326,8 @@ uint16_t SensirionShdlcSvm40::getProductType(uint8_t productType[],
     return error;
 }
 
-uint16_t SensirionShdlcSvm40::getProductName(uint8_t productName[],
-                                             uint8_t productNameSize) {
+uint16_t SensirionUartSvm40::getProductName(uint8_t productName[],
+                                            uint8_t productNameSize) {
     uint16_t error;
     uint8_t buffer[522];
     SensirionShdlcTxFrame txFrame(buffer, 522);
@@ -368,8 +350,8 @@ uint16_t SensirionShdlcSvm40::getProductName(uint8_t productName[],
     return error;
 }
 
-uint16_t SensirionShdlcSvm40::getSerialNumber(uint8_t serialNumber[],
-                                              uint8_t serialNumberSize) {
+uint16_t SensirionUartSvm40::getSerialNumber(uint8_t serialNumber[],
+                                             uint8_t serialNumberSize) {
     uint16_t error;
     uint8_t buffer[522];
     SensirionShdlcTxFrame txFrame(buffer, 522);
@@ -393,10 +375,10 @@ uint16_t SensirionShdlcSvm40::getSerialNumber(uint8_t serialNumber[],
 }
 
 uint16_t
-SensirionShdlcSvm40::getVersion(uint8_t& firmwareMajor, uint8_t& firmwareMinor,
-                                bool& firmwareDebug, uint8_t& hardwareMajor,
-                                uint8_t& hardwareMinor, uint8_t& protocolMajor,
-                                uint8_t& protocolMinor) {
+SensirionUartSvm40::getVersion(uint8_t& firmwareMajor, uint8_t& firmwareMinor,
+                               bool& firmwareDebug, uint8_t& hardwareMajor,
+                               uint8_t& hardwareMinor, uint8_t& protocolMajor,
+                               uint8_t& protocolMinor) {
     uint16_t error;
     uint8_t buffer[26];
     SensirionShdlcTxFrame txFrame(buffer, 26);
@@ -424,7 +406,7 @@ SensirionShdlcSvm40::getVersion(uint8_t& firmwareMajor, uint8_t& firmwareMinor,
     return error;
 }
 
-uint16_t SensirionShdlcSvm40::deviceReset() {
+uint16_t SensirionUartSvm40::deviceReset() {
     uint16_t error;
     uint8_t buffer[12];
     SensirionShdlcTxFrame txFrame(buffer, 12);
@@ -438,15 +420,12 @@ uint16_t SensirionShdlcSvm40::deviceReset() {
 
     error = SensirionShdlcCommunication::sendAndReceiveFrame(*_serial, txFrame,
                                                              rxFrame, 50000);
-    if (error) {
-        return error;
-    }
 
     delay(100);
     return error;
 }
 
-uint16_t SensirionShdlcSvm40::getSystemUpTime(uint32_t& systemUpTime) {
+uint16_t SensirionUartSvm40::getSystemUpTime(uint32_t& systemUpTime) {
     uint16_t error;
     uint8_t buffer[20];
     SensirionShdlcTxFrame txFrame(buffer, 20);
@@ -468,7 +447,7 @@ uint16_t SensirionShdlcSvm40::getSystemUpTime(uint32_t& systemUpTime) {
     return error;
 }
 
-uint16_t SensirionShdlcSvm40::enterBootloader() {
+uint16_t SensirionUartSvm40::enterBootloader() {
     uint16_t error;
     uint8_t buffer[12];
     SensirionShdlcTxFrame txFrame(buffer, 12);
@@ -483,9 +462,6 @@ uint16_t SensirionShdlcSvm40::enterBootloader() {
 
     error = SensirionShdlcCommunication::sendAndReceiveFrame(*_serial, txFrame,
                                                              rxFrame, 50000);
-    if (error) {
-        return error;
-    }
 
     delay(1000);
     return error;

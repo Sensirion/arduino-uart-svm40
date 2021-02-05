@@ -3,7 +3,7 @@
  *
  * SHDLC-Generator: 0.8.2
  * Yaml Version: 0.3.0
- * Template Version: 0.2.0
+ * Template Version: 0.3.0
  */
 /*
  * Copyright (c) 2021, Sensirion AG
@@ -36,17 +36,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef SENSIRIONSHDLCSVM40_H
-#define SENSIRIONSHDLCSVM40_H
+#ifndef SENSIRIONUARTSVM40_H
+#define SENSIRIONUARTSVM40_H
 
-#include <SensirionCoreArduinoLibrary.h>
+#include <SensirionCore.h>
 
-class SensirionShdlcSvm40 {
+class SensirionUartSvm40 {
 
   public:
-    SensirionShdlcSvm40();
+    SensirionUartSvm40();
     /**
-     * begin() - Initializes the SensirionShdlcSvm40 class.
+     * begin() - Initializes the SensirionUartSvm40 class.
      *
      * @param serial Arduino stream object to be communicated with.
      *
@@ -348,4 +348,4 @@ class SensirionShdlcSvm40 {
     Stream* _serial = nullptr;
 };
 
-#endif /* SENSIRIONSHDLCSVM40_H */
+#endif /* SENSIRIONUARTSVM40_H */
