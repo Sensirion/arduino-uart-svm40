@@ -3,6 +3,12 @@
 This is the Sensirion SVM40 library for Arduino using the
 modules UART interface.
 
+[<center><img src="images/svm40.png" width="300px"></center>](https://www.sensirion.com/en/environmental-sensors/evaluation-kit-sek-svm40/)
+
+Click [here](https://www.sensirion.com/en/environmental-sensors/evaluation-kit-sek-svm40/) to learn more about the SGP40
+sensor and the SVM40 Evaluation Kit Board.
+
+
 # Installation
 
 To install, download the latest release as .zip file and add it to your
