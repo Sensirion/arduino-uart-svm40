@@ -28,14 +28,15 @@ Note: Installation via the Arduino Library Manager is coming soon.
 # Quick Start
 
 1. Connect the SVM40 Sensor to one of your Arduino board's
-   UART buses. We recommend using `Serial1`. Check the pinout of your Arduino
-   board to find the correct pins. The pinout of the SVM40
+   UART buses. You will need an Arduino board that has more than one UART since one instance is used for programming and tracing. We recommend using `Serial1`. Check the pinout of your Arduino board to find the correct pins. The pinout of the SVM40
    Sensor board can be found in the data sheet.
 
-	* **VDD** of the SEK-SVM40 to the **3.3V** of your Arduino board (5V works as well)
-	* **GND** of the SEK-SVM40 to the **GND** of your Arduino board
-	* **RX** of the SEK-SVM40 to the **UART1-TX** of your Arduino board
-	* **TX** of the SEK-SVM40 to the **UART1-RX** of your Arduino board
+	* **VDD** (pin 1) of the SEK-SVM40 to the **3.3V** of your Arduino board (5V works as well) 
+	* **GND** (pin 2) of the SEK-SVM40 to the **GND** of your Arduino board 
+	* **RX** (pin 3, host TX) of the SEK-SVM40 to the **UART1-TX** of your Arduino board 
+	* **TX** (pin 4, host RX) of the SEK-SVM40 to the **UART1-RX** of your Arduino board 
+
+	For use with UART **SEL** (pin 5 of SEK-SVM40 connector) must be floating!
 
 2. Open the `exampleUsage` sample project within the Arduino IDE
 

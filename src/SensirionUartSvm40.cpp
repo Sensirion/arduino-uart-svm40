@@ -35,10 +35,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 #include "SensirionUartSvm40.h"
 #include "Arduino.h"
 #include "SensirionCore.h"
+#include <math.h>
 
 #define SVM40_UART_ADDRESS 0x00
 
@@ -142,12 +142,31 @@ uint16_t SensirionUartSvm40::readMeasuredValuesAsIntegersWithRawParameters(
     return error;
 }
 
-uint16_t SensirionUartSvm40::getTemperatureOffsetForRhtMeasurements(
-    uint8_t tOffset[], uint8_t tOffsetSize) {
+uint16_t SensirionUartSvm40::readMeasuredValues(float& vocIndex,
+                                                float& humidity,
+                                                float& temperature) {
     uint16_t error;
-    uint8_t buffer[522];
-    SensirionShdlcTxFrame txFrame(buffer, 522);
-    SensirionShdlcRxFrame rxFrame(buffer, 522);
+    int16_t humidityRaw;
+    int16_t temperatureRaw;
+    int16_t vocRaw;
+
+    error = readMeasuredValuesAsIntegers(vocRaw, humidityRaw, temperatureRaw);
+    if (error) {
+        return error;
+    }
+
+    humidity = static_cast<float>(humidityRaw) / 100.0f;
+    temperature = static_cast<float>(temperatureRaw) / 200.0f;
+    vocIndex = static_cast<float>(vocRaw) / 10.0f;
+    return NoError;
+}
+
+uint16_t SensirionUartSvm40::getTemperatureOffsetForRhtMeasurementsRaw(
+    int16_t& tOffset) {
+    uint16_t error;
+    uint8_t buffer[20];
+    SensirionShdlcTxFrame txFrame(buffer, sizeof buffer);
+    SensirionShdlcRxFrame rxFrame(buffer, sizeof buffer);
 
     error = txFrame.begin(0x60, SVM40_UART_ADDRESS, 1);
     error |= txFrame.addUInt8(0x01);
@@ -162,8 +181,25 @@ uint16_t SensirionUartSvm40::getTemperatureOffsetForRhtMeasurements(
         return error;
     }
 
-    error |= rxFrame.getBytes(tOffset, tOffsetSize);
+    error |= rxFrame.getInt16(tOffset);
     return error;
+}
+
+uint16_t
+SensirionUartSvm40::getTemperatureOffsetForRhtMeasurements(float& tOffset) {
+    uint16_t error;
+    int16_t tOffsetRaw;
+
+    tOffset = NAN;
+
+    error = getTemperatureOffsetForRhtMeasurementsRaw(tOffsetRaw);
+
+    if (error) {
+        return error;
+    }
+
+    tOffset = static_cast<float>(tOffsetRaw) / 200.0f;
+    return NoError;
 }
 
 uint16_t SensirionUartSvm40::getVocTuningParameters(
@@ -213,16 +249,16 @@ uint16_t SensirionUartSvm40::storeNvData() {
     return error;
 }
 
-uint16_t SensirionUartSvm40::setTemperatureOffsetForRhtMeasurements(
-    uint8_t tOffset[], uint8_t tOffsetSize) {
+uint16_t
+SensirionUartSvm40::setTemperatureOffsetForRhtMeasurementsRaw(int16_t tOffset) {
     uint16_t error;
-    uint8_t buffer[520];
-    SensirionShdlcTxFrame txFrame(buffer, 520);
-    SensirionShdlcRxFrame rxFrame(buffer, 520);
+    uint8_t buffer[16];
+    SensirionShdlcTxFrame txFrame(buffer, sizeof buffer);
+    SensirionShdlcRxFrame rxFrame(buffer, sizeof buffer);
 
-    error = txFrame.begin(0x60, SVM40_UART_ADDRESS, 255);
+    error = txFrame.begin(0x60, SVM40_UART_ADDRESS, 3);
     error |= txFrame.addUInt8(0x81);
-    error |= txFrame.addBytes(tOffset, tOffsetSize);
+    error |= txFrame.addInt16(tOffset);
     error |= txFrame.finish();
     if (error) {
         return error;
@@ -232,6 +268,12 @@ uint16_t SensirionUartSvm40::setTemperatureOffsetForRhtMeasurements(
                                                              rxFrame, 50000);
 
     return error;
+}
+
+uint16_t
+SensirionUartSvm40::setTemperatureOffsetForRhtMeasurements(float tOffset) {
+    int16_t tOffsetRaw = static_cast<int16_t>(tOffset * 200.0f);
+    return setTemperatureOffsetForRhtMeasurementsRaw(tOffsetRaw);
 }
 
 uint16_t SensirionUartSvm40::setVocTuningParameters(

@@ -71,7 +71,7 @@ void setup() {
         errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
     } else {
-        Serial.print("SerialNumber:");
+        Serial.print("SerialNumber: ");
         Serial.println((char*)serialNumber);
     }
 
@@ -83,7 +83,7 @@ void setup() {
         errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
     } else {
-        Serial.print("ProductType:");
+        Serial.print("ProductType: ");
         Serial.println((char*)productType);
     }
 
@@ -95,7 +95,7 @@ void setup() {
         errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
     } else {
-        Serial.print("ProductName:");
+        Serial.print("ProductName: ");
         Serial.println((char*)productName);
     }
 
@@ -130,6 +130,26 @@ void setup() {
         Serial.println(protocolMinor);
     }
 
+    error = svm40.setTemperatureOffsetForRhtMeasurements(0);
+    if (error) {
+        Serial.print("Error trying to execute "
+                     "setTemperatureOffsetForRhtMeasurements(): ");
+        errorToString(error, errorMessage, 256);
+        Serial.println(errorMessage);
+    }
+
+    float tOffset;
+    error = svm40.getTemperatureOffsetForRhtMeasurements(tOffset);
+    if (error) {
+        Serial.print("Error trying to execute "
+                     "getTemperatureOffsetForRhtMeasurements(): ");
+        errorToString(error, errorMessage, 256);
+        Serial.println(errorMessage);
+    } else {
+        Serial.print("Temperature Offset: ");
+        Serial.println(tOffset);
+    }
+
     // Start Measurement
     error = svm40.startContinuousMeasurement();
     if (error) {
@@ -144,24 +164,22 @@ void loop() {
     char errorMessage[256];
     delay(1000);
 
-    // Read Measurement
-    int16_t vocIndex;
-    int16_t humidity;
-    int16_t temperature;
-    error = svm40.readMeasuredValuesAsIntegers(vocIndex, humidity, temperature);
+    float vocIndex;
+    float humidity;
+    float temperature;
+    error = svm40.readMeasuredValues(vocIndex, humidity, temperature);
     if (error) {
-        Serial.print(
-            "Error trying to execute readMeasuredValuesAsIntegers(): ");
+        Serial.print("Error trying to execute readMeasuredValues: ");
         errorToString(error, errorMessage, 256);
         Serial.println(errorMessage);
     } else {
-        Serial.print("VocIndex:");
-        Serial.print(vocIndex / 10.0);
+        Serial.print("VocIndex: ");
+        Serial.print(vocIndex);
         Serial.print("\t");
-        Serial.print("Humidity:");
-        Serial.print(humidity / 100.0);
+        Serial.print("Humidity: ");
+        Serial.print(humidity);
         Serial.print("\t");
-        Serial.print("Temperature:");
-        Serial.println(temperature / 200.0);
+        Serial.print("Temperature: ");
+        Serial.println(temperature);
     }
 }
