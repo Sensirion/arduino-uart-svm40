@@ -97,6 +97,26 @@ class SensirionUartSvm40 {
                                           int16_t& temperature);
 
     /**
+     * readMeasuredValues() - Returns the new measurement results.
+     *
+     * @note This command is only available in measurement mode. The firmware
+     * updates the measurement values every second. Polling data with a faster
+     * sampling rate will return the same values. The first measurement is
+     * available 1 second after the start measurement command is issued. Any
+     * readout prior to this will return zero initialized values.
+     *
+     * @param vocIndex VOC index.
+     *
+     * @param humidity Compensated ambient humidity in % RH.
+     *
+     * @param temperature Compensated ambient temperature in degrees celsius.
+     *
+     * @return 0 on success, an error code otherwise
+     */
+    uint16_t readMeasuredValues(float& vocIndex, float& humidity,
+                                float& temperature);
+
+    /**
      * readMeasuredValuesAsIntegersWithRawParameters() - Returns the new
      * measurement results as integers with raw values added.
      *
@@ -140,8 +160,20 @@ class SensirionUartSvm40 {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t getTemperatureOffsetForRhtMeasurements(uint8_t tOffset[],
-                                                    uint8_t tOffsetSize);
+    uint16_t getTemperatureOffsetForRhtMeasurementsRaw(int16_t& tOffset);
+
+    /**
+     * getTemperatureOffsetForRhtMeasurements() - Gets the T-Offset for the
+     * temperature compensation of the RHT algorithm.
+     *
+     * @param tOffset Temperature offset which is used for the RHT measurements
+     * in degrees celsius with no scaling.
+     *
+     * @note Only supported for firmware version >= 2.0.
+     *
+     * @return 0 on success, an error code otherwise
+     */
+    uint16_t getTemperatureOffsetForRhtMeasurements(float& tOffset);
 
     /**
      * getVocTuningParameters() - Gets the currently set parameters for
@@ -192,8 +224,21 @@ class SensirionUartSvm40 {
      *
      * @return 0 on success, an error code otherwise
      */
-    uint16_t setTemperatureOffsetForRhtMeasurements(uint8_t tOffset[],
-                                                    uint8_t tOffsetSize);
+    uint16_t setTemperatureOffsetForRhtMeasurementsRaw(int16_t tOffset);
+
+    /**
+     * setTemperatureOffsetForRhtMeasurements() - Sets the T-Offset for the
+     * temperature compensation of the RHT algorithm.
+     *
+     * @note Execute the store command after writing the parameter to store it
+     * in the non-volatile memory of the device otherwise the parameter will be
+     * reset upton a device reset.
+     *
+     * @param tOffset Temperature offset in degrees celsius.
+     *
+     * @return 0 on success, an error code otherwise
+     */
+    uint16_t setTemperatureOffsetForRhtMeasurements(float tOffset);
 
     /**
      * setVocTuningParameters() - Sets parameters to customize the VOC
