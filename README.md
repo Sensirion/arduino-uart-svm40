@@ -38,6 +38,8 @@ Note: Installation via the Arduino Library Manager is coming soon.
 
 	For use with UART **SEL** (pin 5 of SEK-SVM40 connector) must be floating!
 
+	<img src="images/svm40-kit-pinout.png" width="800px">
+
 2. Open the `exampleUsage` sample project within the Arduino IDE
 
 		File => Examples => Sensirion UART SVM40 => exampleUsage
